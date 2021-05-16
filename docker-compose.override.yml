@@ -1,0 +1,90 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: db
+    environment:
+      - SA_PASSWORD=Password123@
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - db_data:/var/opt/mssql/
+
+  identityserver:
+    container_name: identityserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__DefaultConnection=Data Source=db;Initial Catalog=DemoDB;User ID=sa;Password=Password123@;"
+      - "Clients__WebClient1__ClientUri=http://localhost:8001"
+      - "Clients__WebClient2__ClientUri=http://localhost:8002"
+      - "Clients__ApiClient1__ClientUri=http://localhost:8003"
+      - "Clients__ApiClient2__ClientUri=http://localhost:8004"
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+
+  webclient1:
+    container_name: webclient1
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Identity__Authority=http://identityserver"
+      - "Identity__ClientId=WebClient1"
+      - "Identity__ClientSecret=8ED388A1-B278-4108-AA75-897B282B0BA0"
+    links:
+      - identityserver
+    ports:
+      - "8001:80"
+    depends_on:
+      - identityserver
+
+  webclient2:
+    container_name: webclient2
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Identity__Authority=http://identityserver"
+      - "Identity__ClientId=WebClient2"
+      - "Identity__ClientSecret=02721AA5-CC37-4EC4-A652-16C610663027"
+    links:
+      - identityserver
+    ports:
+      - "8002:80"
+    depends_on:
+      - identityserver
+
+  apiclient1:
+    container_name: apiclient1
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Identity__Authority=http://identityserver"
+      - "Identity__ApiName=apiclient1"
+      - "Identity__ApiSecret=F7A3C0B1-4DD3-4582-B97F-95BE515C8988"
+    ports:
+      - "8003:80"
+    depends_on:
+      - identityserver
+
+  apiclient2:
+    container_name: apiclient2
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Identity__Authority=http://identityserver"
+      - "Identity__ApiName=apiclient2"
+      - "Identity__ApiSecret=C3E66AFE-BEA2-4FD3-9C5F-F521B93EF9E7"
+    ports:
+      - "8004:80"
+    depends_on:
+      - identityserver
+
+  healthcheckui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "HealthChecksUI__HealthChecks__0__Uri=http://identityserver/healthz"
+      - "HealthChecksUI__HealthChecks__1__Uri=http://webclient1/healthz"
+      - "HealthChecksUI__HealthChecks__2__Uri=http://webclient2/healthz"
+      - "HealthChecksUI__HealthChecks__3__Uri=http://apiclient1/healthz"
+      - "HealthChecksUI__HealthChecks__4__Uri=http://apiclient2/healthz"
+    ports:
+      - "9000:80"
+

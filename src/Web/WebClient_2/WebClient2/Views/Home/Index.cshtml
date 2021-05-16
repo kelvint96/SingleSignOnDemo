@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using Microsoft.AspNetCore.Authentication
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Web Client 2</h1>
+
+    <br />
+    <p>Username: @User.Claims?.Where(x => x.Type.Equals("name", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault().Value</p>
+    <p>Token: @await Context.GetTokenAsync("access_token") </p>
+    <br />
+    <input type="button" value="Logout" onclick="window.location='@Url.Action("SignOut", "User")'" class="form-control">
+
+</div>
