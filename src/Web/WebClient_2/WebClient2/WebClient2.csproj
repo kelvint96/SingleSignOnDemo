@@ -5,7 +5,7 @@
 	  <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
 	  <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
 	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	  <DockerfileContext>..\..\..\..</DockerfileContext>
+	  <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

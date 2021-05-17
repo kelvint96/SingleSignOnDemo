@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["src/Web/HealthCheckUI/HealthCheckUI/HealthCheckUI.csproj", "src/Web/HealthCheckUI/HealthCheckUI/"]
-RUN dotnet restore "src/Web/HealthCheckUI/HealthCheckUI/HealthCheckUI.csproj"
+COPY ["Web/HealthCheckUI/HealthCheckUI/HealthCheckUI.csproj", "Web/HealthCheckUI/HealthCheckUI/"]
+RUN dotnet restore "Web/HealthCheckUI/HealthCheckUI/HealthCheckUI.csproj"
 COPY . .
-WORKDIR "/src/src/Web/HealthCheckUI/HealthCheckUI"
+WORKDIR "/src/Web/HealthCheckUI/HealthCheckUI"
 RUN dotnet build "HealthCheckUI.csproj" -c Release -o /app/build
 
 FROM build AS publish

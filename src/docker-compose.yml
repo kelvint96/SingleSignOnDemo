@@ -4,41 +4,41 @@ services:
   db:
     image: mcr.microsoft.com/mssql/server
 
+  healthcheckui:
+    image: ${DOCKER_REGISTRY-}healthcheckui
+    build:
+      context: .
+      dockerfile: Web/HealthCheckUI/HealthCheckUI/Dockerfile
+
   identityserver:
     image: ${DOCKER_REGISTRY-}identityserver
     build:
       context: .
-      dockerfile: src/Services/Identity/IdentityServer/Dockerfile
+      dockerfile: Services/Identity/IdentityServer/Dockerfile
 
   webclient1:
     image: ${DOCKER_REGISTRY-}webclient1
     build:
       context: .
-      dockerfile: src/Web/WebClient_1/WebClient1/Dockerfile
+      dockerfile: Web/WebClient_1/WebClient1/Dockerfile
 
   webclient2:
     image: ${DOCKER_REGISTRY-}webclient2
     build:
       context: .
-      dockerfile: src/Web/WebClient_2/WebClient2/Dockerfile
+      dockerfile: Web/WebClient_2/WebClient2/Dockerfile
 
   apiclient2:
     image: ${DOCKER_REGISTRY-}apiclient2
     build:
       context: .
-      dockerfile: src/Services/ApiClient_2/ApiClient2/Dockerfile
+      dockerfile: Services/ApiClient_2/ApiClient2/Dockerfile
 
   apiclient1:
     image: ${DOCKER_REGISTRY-}apiclient1
     build:
       context: .
-      dockerfile: src/Services/ApiClient_1/ApiClient1/Dockerfile
-
-  healthcheckui:
-    image: ${DOCKER_REGISTRY-}healthcheckui
-    build:
-      context: .
-      dockerfile: src/Web/HealthCheckUI/HealthCheckUI/Dockerfile
+      dockerfile: Services/ApiClient_1/ApiClient1/Dockerfile
 
 volumes:
   db_data: 

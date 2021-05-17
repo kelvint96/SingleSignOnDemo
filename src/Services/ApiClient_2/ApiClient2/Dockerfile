@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["src/Services/ApiClient_2/ApiClient2/ApiClient2.csproj", "src/Services/ApiClient_2/ApiClient2/"]
-RUN dotnet restore "src/Services/ApiClient_2/ApiClient2/ApiClient2.csproj"
+COPY ["Services/ApiClient_2/ApiClient2/ApiClient2.csproj", "Services/ApiClient_2/ApiClient2/"]
+RUN dotnet restore "Services/ApiClient_2/ApiClient2/ApiClient2.csproj"
 COPY . .
-WORKDIR "/src/src/Services/ApiClient_2/ApiClient2"
+WORKDIR "/src/Services/ApiClient_2/ApiClient2"
 RUN dotnet build "ApiClient2.csproj" -c Release -o /app/build
 
 FROM build AS publish

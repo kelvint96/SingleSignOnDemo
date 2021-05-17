@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["src/Web/WebClient_2/WebClient2/WebClient2.csproj", "src/Web/WebClient_2/WebClient2/"]
-RUN dotnet restore "src/Web/WebClient_2/WebClient2/WebClient2.csproj"
+COPY ["Web/WebClient_2/WebClient2/WebClient2.csproj", "Web/WebClient_2/WebClient2/"]
+RUN dotnet restore "Web/WebClient_2/WebClient2/WebClient2.csproj"
 COPY . .
-WORKDIR "/src/src/Web/WebClient_2/WebClient2"
+WORKDIR "/src/Web/WebClient_2/WebClient2"
 RUN dotnet build "WebClient2.csproj" -c Release -o /app/build
 
 FROM build AS publish
